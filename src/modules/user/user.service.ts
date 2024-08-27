@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -24,8 +24,13 @@ export class UserService {
   }
 
   async readUserByEmail({ email }: { email: string }) {
-    return await this.userRepository.findOne({
+    const user = await this.userRepository.findOne({
       where: { email },
     });
+    if (!user) {
+      throw new NotFoundException('사용자가 존재하지 않습니다.');
+    }
+
+    return user;
   }
 }
