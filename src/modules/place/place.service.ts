@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 // import { Restaurant } from './place.entity';
 import { Repository } from 'typeorm';
@@ -15,6 +15,11 @@ export class PlaceService {
   async findAll() {
     const data = await this.locationRepository.find();
     //console.log('data: ', data);
+
+    // 데이터가 없는 경우 예외처리
+    if (data.length === 0) {
+      throw new NotFoundException('시군구 데이터를 조회할 수 없습니다.');
+    }
 
     // 데이터(객체) 키 값 변환, 타임스탬프 값 제거
     return data.map((data) => ({
