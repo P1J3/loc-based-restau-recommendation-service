@@ -15,8 +15,11 @@ export class LocationService implements OnModuleInit {
   async onModuleInit() {
     const filePath = `${process.cwd()}/docs/sgg_lat_lon.xlsx`; // 파일 경로 지정
 
-    await this.locationRepository.clear();
-    await this.readFile(filePath);
+    // 시군구 데이터가 없는 경우, XLSX 파일을 읽어들이는 메서드 실행
+    const count = await this.locationRepository.count();
+    if (count === 0) {
+      await this.readFile(filePath);
+    }
   }
 
   // 시군구 데이터 파일 내용 읽어서 DB에 삽입
