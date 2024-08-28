@@ -44,4 +44,22 @@ export class UserService {
 
     return user;
   }
+
+  async modifyUser({
+    userId,
+    isRecommend,
+  }: {
+    userId: number;
+    isRecommend: boolean;
+  }) {
+    const isRecommendValue = isRecommend ? 1 : 0;
+    await this.readUserById({ userId });
+
+    await this.userRepository.update(
+      { id: userId },
+      { isRecommend: isRecommendValue },
+    );
+
+    return true;
+  }
 }
