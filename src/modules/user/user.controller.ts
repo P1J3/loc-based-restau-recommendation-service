@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Patch,
+  Put,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -10,7 +11,7 @@ import { UserService } from './user.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { exclude } from 'src/helper/exclude';
-import { IsRecommendDto } from './dto/user.dto';
+import { IsRecommendDto, UserProfileDto } from './dto/user.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -26,9 +27,14 @@ export class UserController {
 
   @Patch('/isRecommend')
   async patchUserIsRecommend(@Request() req, @Body() body: IsRecommendDto) {
-    return await this.userService.modifyUser({
+    return await this.userService.modifyUserByRecommend({
       userId: req.user.id,
       isRecommend: body.isRecommend,
     });
+  }
+
+  @Put('/profile')
+  async putUser(@Request() req, @Body() body: UserProfileDto) {
+    return await this.userService.modifyUser({ userId: req.user.id, ...body });
   }
 }

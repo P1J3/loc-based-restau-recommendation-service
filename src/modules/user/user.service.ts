@@ -45,7 +45,7 @@ export class UserService {
     return user;
   }
 
-  async modifyUser({
+  async modifyUserByRecommend({
     userId,
     isRecommend,
   }: {
@@ -59,6 +59,22 @@ export class UserService {
       { id: userId },
       { isRecommend: isRecommendValue },
     );
+
+    return true;
+  }
+
+  async modifyUser({
+    userId,
+    lat,
+    lon,
+  }: {
+    userId: number;
+    lat: string;
+    lon: string;
+  }) {
+    await this.readUserById({ userId });
+
+    await this.userRepository.update({ id: userId }, { lat, lon });
 
     return true;
   }
