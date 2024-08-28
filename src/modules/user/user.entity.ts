@@ -8,7 +8,7 @@ import {
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn() // PRIMARY KEY, AUTO_INCREMENT 
+  @PrimaryGeneratedColumn() // PRIMARY KEY, AUTO_INCREMENT
   id: number;
 
   @Column()
@@ -18,7 +18,7 @@ export class User {
   password: string;
 
   @Column({ nullable: true })
-  isCommend: number;
+  isRecommend: number;
 
   @Column({ nullable: true })
   lat: string;
@@ -26,9 +26,9 @@ export class User {
   @Column({ nullable: true })
   lon: string;
 
-  @CreateDateColumn()  // 자동으로 날짜 삽입
+  @CreateDateColumn() // 자동으로 날짜 삽입
   createdAt: Date;
 
-  @UpdateDateColumn()  // 자동으로 업데이트 날짜 삽입
+  @UpdateDateColumn() // 자동으로 업데이트 날짜 삽입
   updatedAt: Date;
 }

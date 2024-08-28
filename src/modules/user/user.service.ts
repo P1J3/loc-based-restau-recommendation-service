@@ -44,4 +44,38 @@ export class UserService {
 
     return user;
   }
+
+  async modifyUserByRecommend({
+    userId,
+    isRecommend,
+  }: {
+    userId: number;
+    isRecommend: boolean;
+  }) {
+    const isRecommendValue = isRecommend ? 1 : 0;
+    await this.readUserById({ userId });
+
+    await this.userRepository.update(
+      { id: userId },
+      { isRecommend: isRecommendValue },
+    );
+
+    return true;
+  }
+
+  async modifyUser({
+    userId,
+    lat,
+    lon,
+  }: {
+    userId: number;
+    lat: string;
+    lon: string;
+  }) {
+    await this.readUserById({ userId });
+
+    await this.userRepository.update({ id: userId }, { lat, lon });
+
+    return true;
+  }
 }
