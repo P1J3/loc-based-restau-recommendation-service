@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  Double,
 } from 'typeorm';
 
 @Entity()
@@ -28,9 +27,9 @@ export class Restaurant {
   address: string;
 
   @Column()
-  average: Double;
+  average: number;
 
-  @Column()
+  @Column({ type: 'double' })
   locationId: number;
 
   @CreateDateColumn() // 자동으로 날짜 삽입

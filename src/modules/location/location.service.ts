@@ -13,12 +13,14 @@ export class LocationService implements OnModuleInit {
 
   // 서버 실행 시 자동으로 실행될 메서드
   async onModuleInit() {
-    const filePath = 'docs.sgg_lat_lon.xlsx'; // 파일 경로 지정
+    const filePath = `${process.cwd()}/docs/sgg_lat_lon.xlsx`; // 파일 경로 지정
+
+    await this.locationRepository.clear();
     await this.readFile(filePath);
   }
 
   // 시군구 데이터 파일 내용 읽어서 DB에 삽입
-  async readFile(filePath: string): Promise<void> {
+  async readFile(filePath: string) {
     try {
       // 1. XLSX 파일을 읽어 들임
       const workbook = XLSX.readFile(filePath);
@@ -28,22 +30,27 @@ export class LocationService implements OnModuleInit {
       const sheet = workbook.Sheets[sheetName];
 
       // 3. 시트의 데이터를 JSON 형식으로 변환
-      const jsonData = XLSX.utils.sheet_to_json(sheet);
+      const jsonData = XLSX.utils.sheet_to_json(sheet, {
+        header: ['do-si', 'sgg', 'lat', 'lon'], // 수동으로 헤더 지정
+        range: 1, // 첫 번째 행을 건너뛰고 데이터로 처리
+      });
       // jsonData 예시
       // [
-      //   { "doSi": "서울특별시", "sgg": "강남구", "lat": "37.5172", "lon": "127.0473" },
-      //   { "doSi": "부산광역시", "sgg": "해운대구", "lat": "35.1631", "lon": "129.1634" }
+      //   { "do-si": "서울특별시", "sgg": "강남구", "lat": "37.5172", "lon": "127.0473" },
+      //   { "do-si": "부산광역시", "sgg": "해운대구", "lat": "35.1631", "lon": "129.1634" }
       // ]
+      //console.log('jsonData: ', jsonData);
 
       // 4. 변환된 데이터를 DB에 삽입
       for (const data of jsonData) {
+        //console.log('data: ', data);
         const location = new Location();
 
         // 데이터 매핑
-        location.doSi = data['doSi'] || '';
-        location.sgg = data['Sgg'] || ''; // 예: 'Sgg'는 엑셀의 컬럼 이름
-        location.lat = data['Lat'] || ''; // 예: 'Lat'는 엑셀의 컬럼 이름
-        location.lon = data['Lon'] || ''; // 예: 'Lon'는 엑셀의 컬럼 이름
+        location.doSi = data['do-si'] || '';
+        location.sgg = data['sgg'] || ''; // 예: 'Sgg'는 엑셀의 컬럼 이름
+        location.lat = data['lat'] || ''; // 예: 'Lat'는 엑셀의 컬럼 이름
+        location.lon = data['lon'] || ''; // 예: 'Lon'는 엑셀의 컬럼 이름
 
         // 각 엔티티를 DB에 저장
         await this.locationRepository.save(location);
