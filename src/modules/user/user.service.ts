@@ -4,7 +4,6 @@ import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SignUpUserDto } from './dto/user.dto';
 import * as bcrypt from 'bcrypt';
-import { exclude } from 'src/helper/exclude';
 
 @Injectable()
 export class UserService {
@@ -43,6 +42,6 @@ export class UserService {
       throw new NotFoundException('사용자가 존재하지 않습니다.');
     }
 
-    return exclude(user, ['password']);
+    return user;
   }
 }

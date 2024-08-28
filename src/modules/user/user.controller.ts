@@ -2,6 +2,8 @@ import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { exclude } from 'src/helper/exclude';
+
 @ApiTags('users')
 @Controller('user')
 @ApiBearerAuth('access-token')
@@ -11,6 +13,6 @@ export class UserController {
 
   @Get('/profile')
   async getMyProfile(@Request() req) {
-    return await this.userService.readUserById({ userId: req.user.id });
+    return exclude(req.user, ['password']);
   }
 }
