@@ -33,4 +33,15 @@ export class UserService {
 
     return user;
   }
+
+  async readUserById({ userId }: { userId: number }) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+    if (!user) {
+      throw new NotFoundException('사용자가 존재하지 않습니다.');
+    }
+
+    return user;
+  }
 }
