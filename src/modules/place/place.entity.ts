@@ -8,7 +8,7 @@ import {
 
 @Entity()
 export class Restaurant {
-  @PrimaryGeneratedColumn() // PRIMARY KEY, AUTO_INCREMENT
+  @PrimaryGeneratedColumn({ type: 'bigint', unsigned: true }) // PRIMARY KEY, AUTO_INCREMENT
   id: number;
 
   @Column()
@@ -29,7 +29,7 @@ export class Restaurant {
   @Column()
   average: number;
 
-  @Column({ type: 'double' })
+  @Column({ type: 'int' })
   locationId: number;
 
   @CreateDateColumn()
