@@ -12,6 +12,8 @@ export class PlaceService {
     private restaurantRepository: Repository<Restaurant>,
     @InjectRepository(Location)
     private readonly locationRepository: Repository<Location>,
+    // @InjectRepository(Review)
+    // private readonly reviewRepository: Repository<Review>,
   ) {}
 
   async findAll() {
@@ -91,4 +93,20 @@ export class PlaceService {
     }
     return placeList;
   }
+
+  // async getPlaceInfo({ id }: { id: number }) {
+  //   const place = await this.restaurantRepository.findOne({
+  //     where: { id: id },
+  //   });
+
+  //   const review = await this.reviewRepository.findOne({
+  //     where: { restaurantId: id },
+  //   });
+
+  //   if(!place || !review){
+  //     throw new BadRequestException('맛집 상세정보를 불러올 수 없습니다.')
+  //   }
+  //   const placeInfo = { place, review };
+  //   return placeInfo;
+  // }
 }

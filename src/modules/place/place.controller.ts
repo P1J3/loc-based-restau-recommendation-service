@@ -1,4 +1,11 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  // Param,
+  // ParseIntPipe,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { PlaceService } from './place.service';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PlaceQueryDto } from './dto/place.dto';
@@ -30,4 +37,14 @@ export class PlaceController {
   async getPlaceList(@Query() placeQueryDto: PlaceQueryDto) {
     return this.placeService.getPlaceList(placeQueryDto);
   }
+
+  // @Get('placeInfo/:id')
+  // @ApiResponse({ status: 200, description: '맛집 상세정보입니다.' })
+  // @ApiResponse({
+  //   status: 404,
+  //   description: '맛집 상세정보를 불러올 수 없습니다.',
+  // })
+  // async getPlaceInfo(@Param('id', ParseIntPipe) id: number) {
+  //   return this.placeService.getPlaceInfo({ id });
+  // }
 }
