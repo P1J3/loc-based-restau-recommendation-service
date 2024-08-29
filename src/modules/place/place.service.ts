@@ -14,7 +14,6 @@ export class PlaceService {
   ) {}
   async findAll() {
     const data = await this.locationRepository.find();
-    //console.log('data: ', data);
 
     // 데이터가 없는 경우 예외처리
     if (data.length === 0) {
