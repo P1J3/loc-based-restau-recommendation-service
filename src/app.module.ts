@@ -8,6 +8,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getTypeOrmConfig } from './config/database.config';
+import { LocationModule } from './modules/location/location.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { getTypeOrmConfig } from './config/database.config';
     PlaceModule,
     ReviewModule,
     AuthModule,
+    LocationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
