@@ -32,7 +32,7 @@ export class Restaurant {
   @Column({ type: 'double' })
   locationId: number;
 
-  @CreateDateColumn() // 자동으로 날짜 삽입
+  @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()

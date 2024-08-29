@@ -42,7 +42,6 @@ export class LocationService implements OnModuleInit {
       //   { "do-si": "서울특별시", "sgg": "강남구", "lat": "37.5172", "lon": "127.0473" },
       //   { "do-si": "부산광역시", "sgg": "해운대구", "lat": "35.1631", "lon": "129.1634" }
       // ]
-      //console.log('jsonData: ', jsonData);
 
       // 4. 변환된 데이터를 DB에 삽입
       for (const data of jsonData) {
