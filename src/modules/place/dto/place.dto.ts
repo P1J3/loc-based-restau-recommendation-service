@@ -6,7 +6,7 @@ export class PlaceQueryDto {
   @IsString()
   @ApiProperty({
     description: '위도',
-    example: '126.9996417',
+    example: '37.56100278',
     required: true,
   })
   lat?: string;
@@ -14,7 +14,7 @@ export class PlaceQueryDto {
   @IsString()
   @ApiProperty({
     description: '경도',
-    example: '37.56100278',
+    example: '126.9996417',
     required: true,
   })
   lon?: string;

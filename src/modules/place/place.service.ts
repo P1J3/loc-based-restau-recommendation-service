@@ -43,54 +43,49 @@ export class PlaceService {
     const centerLon: number = +lon;
 
     // 위도의 변화량 계산
-    const deltaLat = range / R;
-    const minLat = centerLat - deltaLat * (180 / Math.PI);
-    const maxLat = centerLat + deltaLat * (180 / Math.PI);
+    const deltaLat = (range / R) * (180 / Math.PI);
+    const minLat = centerLat - deltaLat;
+    const maxLat = centerLat + deltaLat;
 
     // 경도의 변화량 계산 (위도에 따른 보정 적용)
-    const deltaLon = range / (R * Math.cos((centerLat * Math.PI) / 180));
-    const minLon = centerLon - deltaLon * (180 / Math.PI);
-    const maxLon = centerLon + deltaLon * (180 / Math.PI);
+    const cosLat = Math.cos((centerLat * Math.PI) / 180);
+    const deltaLon = (range / (R * cosLat)) * (180 / Math.PI);
+    const minLon = centerLon - deltaLon;
+    const maxLon = centerLon + deltaLon;
+    console.log(minLat, maxLat, minLon, maxLon);
 
     //2. BoundingBox(1차)와 GIS(2차) 활용해서 거리 반경 내 데이터 필터링
-    const queryBuilder = this.restaurantRepository
-      .createQueryBuilder('restaurant')
-      .where('CAST(restaurant.lat AS DOUBLE) BETWEEN :minLat AND :maxLat', {
-        minLat,
-        maxLat,
-      })
-      .andWhere('CAST(restaurant.lon AS DOUBLE) BETWEEN :minLon AND :maxLon', {
-        minLon,
-        maxLon,
-      })
-      .andWhere(
-        `
-        ST_Distance_Sphere(
-          point(:longitude, :latitude),
-          point(CAST(restaurant.lon AS DOUBLE), CAST(restaurant.lat AS DOUBLE))
-        ) <= :radius`,
-        { longitude: centerLon, latitude: centerLat, radius: range * 1000 },
-      );
+    let query = `
+      SELECT *
+      FROM restaurant
+      WHERE
+        CAST(lat AS DOUBLE) BETWEEN ${minLat} AND ${maxLat}
+        AND CAST(lon AS DOUBLE) BETWEEN ${minLon} AND ${maxLon}
+        AND ST_Distance_Sphere(
+              point(${centerLon}, ${centerLat}),
+              point(CAST(lon AS DOUBLE), CAST(lat AS DOUBLE))
+            ) <= ${range * 1000}
+    `;
 
     if (sort === '거리순') {
-      queryBuilder.orderBy(
-        `
-          ST_Distance_Sphere(
-            point(:longitude, :latitude),
-            point(CAST(restaurant.lon AS DOUBLE), CAST(restaurant.lat AS DOUBLE))
-          )`,
-        'ASC',
-      );
+      query += `
+    ORDER BY ST_Distance_Sphere(
+              point(${centerLon}, ${centerLat}),
+              point(CAST(lon AS DOUBLE), CAST(lat AS DOUBLE))
+            ) ASC
+  `;
     } else if (sort === '평점순') {
-      queryBuilder.orderBy('restaurant.average', 'DESC');
+      query += ` ORDER BY average DESC`;
     }
+    console.log('Query:', query);
 
-    const placeList = await queryBuilder.getMany();
+    const placeList = await this.restaurantRepository.query(query);
 
     // 데이터가 없는 경우 예외처리
     if (placeList.length === 0) {
       throw new NotFoundException('맛집 목록을 불러올 수 없습니다.');
     }
+
     return placeList;
   }
 

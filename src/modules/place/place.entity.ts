@@ -14,7 +14,7 @@ export class Restaurant {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   type: string;
 
   @Column()
@@ -26,15 +26,12 @@ export class Restaurant {
   @Column()
   address: string;
 
-  @Column()
+  @Column({ type: 'double', nullable: true })
   average: number;
 
-  @Column({ type: 'int' })
-  locationId: number;
-
-  @CreateDateColumn()
+  @CreateDateColumn({ nullable: true })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 }
