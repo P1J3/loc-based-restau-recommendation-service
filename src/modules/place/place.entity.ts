@@ -8,13 +8,13 @@ import {
 
 @Entity()
 export class Restaurant {
-  @PrimaryGeneratedColumn() // PRIMARY KEY, AUTO_INCREMENT
+  @PrimaryGeneratedColumn({ type: 'bigint', unsigned: true }) // PRIMARY KEY, AUTO_INCREMENT
   id: number;
 
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   type: string;
 
   @Column()
@@ -26,15 +26,12 @@ export class Restaurant {
   @Column()
   address: string;
 
-  @Column()
+  @Column({ type: 'double', nullable: true })
   average: number;
 
-  @Column({ type: 'double' })
-  locationId: number;
-
-  @CreateDateColumn()
+  @CreateDateColumn({ nullable: true })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 }
