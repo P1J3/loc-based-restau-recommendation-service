@@ -9,7 +9,7 @@ import {
 @Entity()
 export class Restaurant {
   @PrimaryGeneratedColumn({ type: 'bigint', unsigned: true }) // PRIMARY KEY, AUTO_INCREMENT
-  id: number;
+  id: bigint;
 
   @Column()
   name: string;

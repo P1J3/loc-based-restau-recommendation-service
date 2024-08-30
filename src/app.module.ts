@@ -9,9 +9,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getTypeOrmConfig } from './config/database.config';
 import { LocationModule } from './modules/location/location.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true, // ConfigModule을 전역 모듈로 설정하여 어디서든 사용 가능
       envFilePath: '.env', // 환경 변수 파일 경로 설정
