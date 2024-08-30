@@ -69,11 +69,11 @@ export class PlaceService {
 
     if (sort === '거리순') {
       query += `
-    ORDER BY ST_Distance_Sphere(
-              point(${centerLon}, ${centerLat}),
-              point(CAST(lon AS DOUBLE), CAST(lat AS DOUBLE))
-            ) ASC
-  `;
+        ORDER BY ST_Distance_Sphere(
+                  point(${centerLon}, ${centerLat}),
+                  point(CAST(lon AS DOUBLE), CAST(lat AS DOUBLE))
+                ) ASC
+      `;
     } else if (sort === '평점순') {
       query += ` ORDER BY average DESC`;
     }
