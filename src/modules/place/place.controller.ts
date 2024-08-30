@@ -12,7 +12,7 @@ import { PlaceQueryDto } from './dto/place.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('place')
-@Controller('place')
+@Controller('places')
 @ApiBearerAuth('access-token')
 @UseGuards(JwtAuthGuard)
 export class PlaceController {
@@ -28,7 +28,7 @@ export class PlaceController {
     return this.placeService.findAll();
   }
 
-  @Get('placeList')
+  @Get()
   @ApiResponse({ status: 200, description: '식당 목록을 조회합니다.' })
   @ApiResponse({
     status: 404,
@@ -38,7 +38,7 @@ export class PlaceController {
     return this.placeService.getPlaceList(placeQueryDto);
   }
 
-  // @Get('placeInfo/:id')
+  // @Get('/:id')
   // @ApiResponse({ status: 200, description: '맛집 상세정보입니다.' })
   // @ApiResponse({
   //   status: 404,
