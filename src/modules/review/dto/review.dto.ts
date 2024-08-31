@@ -7,7 +7,7 @@ export class CreateReviewDto {
     description: '리뷰 대상 식당 ID',
     example: 1,
   })
-  id: number;
+  restaurantId: number;
 
   @IsInt()
   @Min(1)

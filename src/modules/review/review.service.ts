@@ -19,7 +19,7 @@ export class ReviewService {
     createReviewDto: CreateReviewDto,
   ): Promise<Review> {
     const restaurant = await this.restaurantRepository.findOne({
-      where: { id: BigInt(createReviewDto.restaurantId) },
+      where: { id: BigInt(createReviewDto.restaurantId) }, // Handle `BigInt` conversion if needed
     });
 
     if (!restaurant) {
@@ -38,17 +38,24 @@ export class ReviewService {
     return review;
   }
 
-  async getReviewsByRestaurantId(restaurantId: string): Promise<Review[]> {
+  async getReviewsByRestaurantId(restaurantId: number): Promise<Review[]> {
     return this.reviewRepository.find({
       where: { restaurantId },
       order: { createdAt: 'DESC' },
     });
   }
 
-  private async updateRestaurantAverage(restaurantId: string): Promise<void> {
+  private async updateRestaurantAverage(restaurantId: number): Promise<void> {
     const reviews = await this.reviewRepository.find({
       where: { restaurantId },
     });
+
+    if (reviews.length === 0) {
+      // Avoid division by zero
+      await this.restaurantRepository.update(restaurantId, { average: 0 });
+      return;
+    }
+
     const average =
       reviews.reduce((sum, review) => sum + review.score, 0) / reviews.length;
 

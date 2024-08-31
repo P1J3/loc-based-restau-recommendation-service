@@ -30,7 +30,7 @@ export class ReviewController {
 
   @Get('restaurant/:id')
   @ApiResponse({ status: 200, description: '식당의 리뷰 목록을 반환합니다.' })
-  async getReviewsByRestaurantId(@Param('id') id: string) {
+  async getReviewsByRestaurantId(@Param('id') id: number) {
     return this.reviewService.getReviewsByRestaurantId(id);
   }
 }

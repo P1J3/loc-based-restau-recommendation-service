@@ -12,7 +12,7 @@ export class Review {
   id: number;
 
   @Column({ type: 'bigint' })
-  restaurantId: string;
+  restaurantId: number;
 
   @Column()
   userId: number;
