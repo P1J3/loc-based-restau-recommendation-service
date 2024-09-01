@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Restaurant } from './place.entity';
 import { Repository } from 'typeorm';
 import { Location } from '../location/location.entity';
 import { PlaceQueryDto } from './dto/place.dto';
+import { Review } from '../review/review.entity';
 
 @Injectable()
 export class PlaceService {
@@ -12,8 +17,8 @@ export class PlaceService {
     private restaurantRepository: Repository<Restaurant>,
     @InjectRepository(Location)
     private readonly locationRepository: Repository<Location>,
-    // @InjectRepository(Review)
-    // private readonly reviewRepository: Repository<Review>,
+    @InjectRepository(Review)
+    private readonly reviewRepository: Repository<Review>,
   ) {}
 
   async findAll() {
@@ -89,19 +94,23 @@ export class PlaceService {
     return placeList;
   }
 
-  // async getPlaceInfo({ id }: { id: number }) {
-  //   const place = await this.restaurantRepository.findOne({
-  //     where: { id: id },
-  //   });
+  async getPlaceInfo({ id }: { id: number }) {
+    const place = await this.restaurantRepository.findOne({
+      where: { id: BigInt(id) },
+    });
 
-  //   const review = await this.reviewRepository.findOne({
-  //     where: { restaurantId: id },
-  //   });
+    const reviews = await this.reviewRepository.find({
+      where: { restaurantId: id },
+      order: { createdAt: 'DESC' },
+    });
 
-  //   if(!place || !review){
-  //     throw new BadRequestException('맛집 상세정보를 불러올 수 없습니다.')
-  //   }
-  //   const placeInfo = { place, review };
-  //   return placeInfo;
-  // }
+    if (!place) {
+      throw new BadRequestException('맛집 상세정보를 불러올 수 없습니다.');
+    }
+    const placeInfo = {
+      ...place,
+      reviews: reviews,
+    };
+    return placeInfo;
+  }
 }
