@@ -10,5 +10,6 @@ import { PlaceCronService } from './placeCron.service';
   imports: [TypeOrmModule.forFeature([Restaurant, Location])],
   providers: [PlaceService, PlaceCronService],
   controllers: [PlaceController],
+  exports: [PlaceService],
 })
 export class PlaceModule {}

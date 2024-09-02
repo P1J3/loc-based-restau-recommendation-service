@@ -10,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { getTypeOrmConfig } from './config/database.config';
 import { LocationModule } from './modules/location/location.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { DiscordModule } from './modules/discord/discord.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     ReviewModule,
     AuthModule,
     LocationModule,
+    DiscordModule,
   ],
   controllers: [AppController],
   providers: [AppService],
