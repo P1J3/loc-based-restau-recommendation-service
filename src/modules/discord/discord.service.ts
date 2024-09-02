@@ -2,7 +2,6 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Client, GatewayIntentBits } from 'discord.js';
 import * as dotenv from 'dotenv';
 import { PlaceService } from 'src/modules/place/place.service';
-import { UserService } from '../user/user.service';
 
 dotenv.config();
 
@@ -10,10 +9,7 @@ dotenv.config();
 export class DiscordService implements OnModuleInit {
   private client: Client;
 
-  constructor(
-    private readonly placeService: PlaceService,
-    private readonly userService: UserService,
-  ) {
+  constructor(private readonly placeService: PlaceService) {
     this.client = new Client({
       intents: [
         GatewayIntentBits.Guilds,
