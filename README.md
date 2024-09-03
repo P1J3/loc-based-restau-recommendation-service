@@ -1,4 +1,4 @@
-# Breadcrumbsloc-based-restau-recommendation-service
+# loc-based-restau-recommendation-service
 
 > 원티드 프리온보딩 백엔드 인턴십에서 기술 과제로 요구사항을 받고 팀으로 진행한 프로젝트입니다. 이 문서는 “위치 기반 맛집 추천 및 주문 웹 서비스(가칭 이며 팀에서 변경가능)” 구현을 위한 요구사항을 기록한 문서 입니다.
 
