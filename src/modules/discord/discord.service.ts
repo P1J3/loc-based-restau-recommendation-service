@@ -28,6 +28,8 @@ export class DiscordService implements OnModuleInit {
         console.log(`Logged in as ${this.client.user.tag}!`);
       });
 
+      const imagePath = 'src/img/food.jpg';
+
       this.client.on('messageCreate', async (message) => {
         if (message.content === '!점심 추천') {
           const restaurants = (
@@ -45,7 +47,11 @@ export class DiscordService implements OnModuleInit {
             })
             .join('\n');
 
-          message.reply(`Restaurant list:\n${restaurantMessages}`);
+          message.reply({
+            embeds: { title: '점심 추천' },
+            content: `Restaurant list:\n${restaurantMessages}`,
+            files: [imagePath],
+          });
         }
       });
     } catch (err) {
