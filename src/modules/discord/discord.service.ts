@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Client, GatewayIntentBits } from 'discord.js';
 import * as dotenv from 'dotenv';
 import { PlaceService } from 'src/modules/place/place.service';
+import { UserService } from '../user/user.service';
 
 dotenv.config();
 
@@ -9,7 +10,10 @@ dotenv.config();
 export class DiscordService implements OnModuleInit {
   private client: Client;
 
-  constructor(private readonly placeService: PlaceService) {
+  constructor(
+    private readonly placeService: PlaceService,
+    private readonly userService: UserService,
+  ) {
     this.client = new Client({
       intents: [
         GatewayIntentBits.Guilds,
@@ -48,7 +52,19 @@ export class DiscordService implements OnModuleInit {
             .join('\n');
 
           message.reply({
-            embeds: { title: '점심 추천' },
+            embeds: [
+              { title: '점심 추천' },
+              {
+                image: {
+                  url: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fkor.pngtree.com%2Ffreepng%2Fspicy-cabbage-fried-rice-cake-food-illustration_6343892.html&psig=AOvVaw3t9Blo0kMdzQgrPZl8iv6u&ust=1725434103785000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCKjbqI2dpogDFQAAAAAdAAAAABAK',
+                },
+              },
+              {
+                thumbnail: {
+                  url: 'http://blogfiles.naver.net/20151023_23/shin_0305_1445573936921jrPRT_JPEG/%BD%E6%B3%D7%C0%CF%BF%B9%BD%C3.jpg',
+                },
+              },
+            ],
             content: `Restaurant list:\n${restaurantMessages}`,
             files: [imagePath],
           });

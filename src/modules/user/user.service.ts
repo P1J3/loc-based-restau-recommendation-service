@@ -78,4 +78,12 @@ export class UserService {
 
     return true;
   }
+
+  async readManyUser({ isRecommend }: { isRecommend: boolean }) {
+    const isRecommendValue = isRecommend ? 1 : 0;
+
+    return await this.userRepository.find({
+      where: { isRecommend: isRecommendValue },
+    });
+  }
 }
